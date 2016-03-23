@@ -1,0 +1,24 @@
+#' {{summary}}
+#' 
+#' {{{notes}}}
+#'
+#' {{#parameters}}@param {{name}} {{description}}{{#allowMultiple}} Multiple values are allowed {{enum}}.{{/allowMultiple}}{{#defaultValue}} Default value is {{defaultValue}}. {{^allowMultiple}}While {{enum}} are available.{{/allowMultiple}} {{/defaultValue}}
+#' {{/parameters}}
+#' @export
+{{function_name}} = function({{#parameters}}{{name}} = {{#defaultValue}}"{{defaultValue}}"{{/defaultValue}}{{^defaultValue}}""{{/defaultValue}}{{^is_last}},{{/is_last}}
+                             {{/parameters}}){
+                             
+  parameters = list({{#parameters}}{{name}} = {{name}}{{^is_last}},
+                    {{/is_last}}{{/parameters}})
+  {{#to_val}}to.Validate = c({{#parameters}}{{#optionality}}"{{name}}"{{^last_opt}},{{/last_opt}}{{/optionality}}{{/parameters}}){{/to_val}}
+  validate.Parameters(params = parameters{{#to_val}}, to.Validate = to.Validate{{/to_val}})
+
+  url = build.Query(parameters = parameters,
+                    invoker = "{{invoker}}",
+                    method = "{{metod_identifier}}"{{#mass}},
+                    mass = T{{/mass}})
+  ret = download.Data(url, format, page)
+
+  return(ret)
+
+}
