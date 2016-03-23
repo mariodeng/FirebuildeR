@@ -17,7 +17,7 @@
                     invoker = "{{invoker}}",
                     method = "{{metod_identifier}}"{{#mass}},
                     mass = T{{/mass}})
-  ret = download.Data(url, format, page)
+  ret = download.Data(url, format{{#has_page}}, page{{/has_page}})
 
   return(ret)
 

@@ -20,6 +20,9 @@ for(data in api.definitions){
       operation$metod_identifier = setdiff(operation$metod_identifier,
                                            operation$invoker)
       operation$metod_identifier = setdiff(operation$metod_identifier, "")
+      operation$has_page = lapply(operation$parameters,
+                                  function(x) x$name == "page")
+      operation$has_page =  any(unlist(operation$has_page))
       if("mass" %in% names(operation)){
         operation$metod_identifier = operation$metod_identifier[
           !grepl("\\{", operation$metod_identifier)]
