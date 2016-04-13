@@ -7,6 +7,14 @@ api.meta = fromJSON("http://firebrowse.org/api/api-docs/",
                     simplifyDataFrame = F,
                     simplifyMatrix = F)
 
+api.meta$apiVersion = unlist(strsplit(api.meta$apiVersion, " ", fixed = T))[1]
+current.version = readLines("FirebrowseR/DESCRIPTION")
+current.version = current.version[grepl("*[Vv]ersion*", current.version)]
+current.version = gsub("[[:alpha:]]|[[:blank:]]|:", "", current.version)
+if(current.version == api.meta$apiVersion){
+  stop("Nothing to update.")
+}
+
 api.definitions = lapply(api.meta$apis, function(current.api){
   fromJSON(paste("http://firebrowse.org/api", current.api$path, sep = ""),
            simplifyVector = F,
@@ -22,8 +30,8 @@ print("Updating LICENSE file")
 source("src/Build_LICENSE.R")
 
 setwd("FirebrowseR/")
-print("Testing source code")
+print("Unit testing")
 test()
-print("Applying unit tests")
+print("Building documentation")
 document()
-print("done🍻")
+print("done")
